@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diagnóstico da Rotina · Consultório Inteligente</title>
+<meta name="description" content="Descubra em 5 minutos quanto do seu consultório ainda funciona no improviso. Diagnóstico gratuito da QRO Academy.">
+<meta property="og:title" content="Diagnóstico da Rotina do Consultório">
+<meta property="og:description" content="15 perguntas, 5 minutos: descubra por onde começar a organizar sua rotina.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#1F3A3D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Domine:wght@500;700&family=Nunito+Sans:wght@400;600;700;800&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+<style>
+:root {
+  --bg: #F6F4EF; --surface: #FDFCF9; --ink: #1F3A3D; --text: #3F4F51; --muted: #5F6F70;
+  --line: #DCE3E0; --tint: #E8EFEC; --accent: #B8551F; --accent-soft: #F6E3D6;
+  --good: #2F7D5B; --warn: #A86A12; --bad: #B23A2E;
+  --display: 'Domine', Georgia, serif; --body: 'Nunito Sans', 'Segoe UI', Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #13211F; --surface: #1A2B29; --ink: #EAF1EE; --text: #C9D8D4; --muted: #93A6A2;
+  --line: #2C403D; --tint: #20332F; --accent: #F2A65A; --accent-soft: #3A2A1C;
+  --good: #6CC79C; --warn: #E3B15A; --bad: #EF7F72; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #13211F; --surface: #1A2B29; --ink: #EAF1EE; --text: #C9D8D4; --muted: #93A6A2;
+  --line: #2C403D; --tint: #20332F; --accent: #F2A65A; --accent-soft: #3A2A1C;
+  --good: #6CC79C; --warn: #E3B15A; --bad: #EF7F72; color-scheme: dark }
+* { box-sizing: border-box }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--body); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 48px }
+.wrap { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px }
+.eyebrow { font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--accent) }
+h1 { font-family: var(--display); font-weight: 700; color: var(--ink); font-size: clamp(30px, 6vw, 42px); line-height: 1.15; margin: 6px 0 10px; text-wrap: balance }
+h2 { font-family: var(--display); font-weight: 700; color: var(--ink); font-size: 21px; margin: 0; text-wrap: balance }
+p { margin: 0 }
+a { color: var(--accent) }
+.lede { max-width: 62ch }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 22px }
+.sub { color: var(--muted); font-size: 15px; margin-top: 6px }
+.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px; margin-top: 16px }
+.fields .wide { grid-column: 1 / -1 }
+.cityuf { display: grid; grid-template-columns: minmax(0, 1fr) 84px; gap: 10px }
+@media (max-width: 560px) { .fields { grid-template-columns: 1fr } }
+label.f { display: flex; flex-direction: column; gap: 6px; font-size: 13px; font-weight: 700; color: var(--ink) }
+label.f .opt-tag { font-weight: 600; color: var(--muted) }
+input[type=text], input[type=email], input[type=tel], select { font: inherit; font-size: 16px; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; min-width: 0; width: 100% }
+input[aria-invalid=true], select[aria-invalid=true] { border-color: var(--bad) }
+input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible, .opt input:focus-visible + span, .consent input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.consent { display: flex; gap: 10px; align-items: flex-start; margin-top: 16px; font-size: 14px; color: var(--text) }
+.consent input { margin-top: 4px; width: 18px; height: 18px; flex: none; accent-color: var(--ink) }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden }
+.scale { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 14px; color: var(--muted); margin-top: 8px }
+.scale b { color: var(--ink) }
+.progress { height: 6px; background: var(--tint); border-radius: 999px; overflow: hidden; margin-top: 14px }
+.progress div { height: 100%; width: 0; background: var(--accent); transition: width .25s }
+ol.qs { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column }
+.q { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 14px 0; border-top: 1px solid var(--line) }
+.q:first-child { border-top: none }
+.q.missing .qtext { color: var(--bad) }
+.num { font-family: var(--display); font-weight: 700; color: var(--accent); font-size: 18px; font-variant-numeric: tabular-nums }
+.qtext { color: var(--ink); font-weight: 600 }
+.pillar { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-top: 2px }
+.opts { display: flex; gap: 6px }
+.opt { position: relative }
+.opt input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer }
+.opt span { display: grid; place-items: center; min-width: 92px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 999px; font-size: 13px; font-weight: 700; color: var(--muted); background: var(--bg); transition: background .15s, color .15s, border-color .15s }
+.opt input:checked + span { background: var(--ink); color: var(--bg); border-color: var(--ink) }
+@media (max-width: 640px) {
+  .q { grid-template-columns: 30px minmax(0, 1fr) }
+  .opts { grid-column: 1 / -1 }
+  .opt { flex: 1 } .opt span { min-width: 0 }
+}
+.result { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 22px; align-items: center; margin-top: 14px }
+@media (max-width: 560px) { .result { grid-template-columns: 1fr } }
+.score { font-family: var(--display); font-weight: 700; font-size: 64px; line-height: 1; color: var(--ink); font-variant-numeric: tabular-nums }
+.score small { font-size: 20px; color: var(--muted) }
+.band { display: inline-block; align-self: flex-start; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; background: var(--tint); color: var(--muted) }
+.band.good { color: var(--good) } .band.warn { color: var(--warn) } .band.bad { color: var(--bad) }
+.bars { display: flex; flex-direction: column; gap: 10px; margin-top: 18px }
+.bar { display: grid; grid-template-columns: 110px minmax(0, 1fr) 46px; gap: 10px; align-items: center; font-size: 14px }
+.bar .track { height: 10px; background: var(--tint); border-radius: 999px; overflow: hidden }
+.bar .fill { height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width .4s }
+.bar .v { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 700 }
+.cta { margin-top: 22px; padding: 18px; border-radius: 12px; background: var(--accent-soft); display: flex; flex-direction: column; gap: 12px }
+.cta h3 { font-family: var(--display); color: var(--ink); font-size: 18px; margin: 0 }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 20px }
+button, .btn { font: inherit; font-weight: 800; font-size: 15px; border-radius: 10px; padding: 12px 18px; cursor: pointer; border: 1px solid var(--ink); text-decoration: none; display: inline-flex; align-items: center; justify-content: center }
+.primary { background: var(--ink); color: var(--bg) }
+.ghost { background: transparent; color: var(--ink) }
+.whats { background: #1F7A4D; border-color: #1F7A4D; color: #FFFFFF }
+.big { width: 100%; padding: 15px 18px; font-size: 16px; margin-top: 18px }
+button:disabled { opacity: .55; cursor: wait }
+.status { font-size: 14px; color: var(--muted) }
+.status.err { color: var(--bad) }
+.foot { font-size: 13px; color: var(--muted) }
+[hidden] { display: none !important }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">QRO Academy · Consultório Inteligente</p>
+    <h1>Diagnóstico da Rotina do Consultório</h1>
+    <p class="lede">Descubra quanto da sua operação ainda depende de improviso e por onde começar a organizar. Responda pensando nas últimas quatro semanas: são 15 perguntas e leva cerca de 5 minutos.</p>
+  </header>
+
+  <form id="form" class="wrap" style="gap:28px" novalidate>
+    <section class="panel" aria-labelledby="t-q">
+      <h2 id="t-q">Com que frequência isso acontece?</h2>
+      <div class="scale"><span><b>Nunca</b> = 0 ponto</span><span><b>Às vezes</b> = 1 ponto</span><span><b>Frequentemente</b> = 2 pontos</span></div>
+      <div class="progress" aria-hidden="true"><div id="prog"></div></div>
+      <ol class="qs" id="qs"></ol>
+    </section>
+
+    <section class="panel" id="lead" aria-labelledby="t-id">
+      <h2 id="t-id">Para onde enviamos o seu resultado?</h2>
+      <p class="sub">Preencha seus dados para ver a sua nota e baixar o relatório em PDF.</p>
+      <div class="fields">
+        <label class="f" for="nome">Nome completo<input type="text" id="nome" name="nome" autocomplete="name" required maxlength="120"></label>
+        <label class="f" for="prof">Profissão<input type="text" id="prof" name="prof" placeholder="Ex.: fisioterapeuta" required maxlength="80"></label>
+        <label class="f" for="whats">WhatsApp<input type="tel" id="whats" name="whats" autocomplete="tel" inputmode="tel" placeholder="(47) 99999-9999" required maxlength="20"></label>
+        <label class="f" for="email">E-mail<input type="email" id="email" name="email" autocomplete="email" required maxlength="120"></label>
+        <div class="cityuf">
+          <label class="f" for="cidade">Cidade<input type="text" id="cidade" name="cidade" autocomplete="address-level2" required maxlength="80"></label>
+          <label class="f" for="uf">UF<select id="uf" name="uf" required><option value="">—</option></select></label>
+        </div>
+        <label class="f" for="insta">Instagram do consultório <span class="opt-tag">(opcional)</span><input type="text" id="insta" name="insta" placeholder="@seuconsultorio" maxlength="60"></label>
+        <div class="hp" aria-hidden="true"><label>Não preencha<input type="text" id="site" name="site" tabindex="-1" autocomplete="off"></label></div>
+      </div>
+      <label class="consent" for="lgpd"><input type="checkbox" id="lgpd" name="lgpd" required>
+        <span>Autorizo a QRO Secretaria a guardar estes dados e a entrar em contato pelo WhatsApp ou e-mail sobre o meu diagnóstico, conforme a <a href="https://www.qrosecretaria.com.br" target="_blank" rel="noopener">política de privacidade</a>. Posso pedir a exclusão a qualquer momento.</span></label>
+      <button type="submit" class="primary big" id="go">Ver meu resultado</button>
+      <p class="status" id="status" role="status" style="margin-top:10px"></p>
+    </section>
+
+    <section class="panel" id="res" aria-labelledby="t-r" tabindex="-1" hidden>
+      <h2 id="t-r">Seu resultado</h2>
+      <div class="result">
+        <p class="score" id="score">–<small>/100</small></p>
+        <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+          <span class="band" id="band"></span>
+          <p id="msg"></p>
+        </div>
+      </div>
+      <div class="bars" id="bars"></div>
+      <p class="foot" style="margin-top:10px">Cada barra mostra quanto do improviso está concentrado naquela etapa do método. A barra mais cheia indica por onde começar.</p>
+      <div class="actions">
+        <button type="button" class="primary" id="save">Baixar PDF</button>
+        <button type="button" class="ghost" id="share">Compartilhar</button>
+        <span class="status" id="status2" role="status"></span>
+      </div>
+      <div class="cta">
+        <h3>Quer ajuda para organizar o seu consultório?</h3>
+        <p>Converse com a equipe da QRO e receba uma orientação sobre o seu resultado, sem compromisso.</p>
+        <a class="btn whats" id="talk" href="https://wa.me/5547999861631" target="_blank" rel="noopener">Falar com a QRO no WhatsApp</a>
+      </div>
+    </section>
+  </form>
+
+  <p class="foot">Nota = 100 − (pontos × 100 ÷ 30). QRO Academy · <a href="https://www.qrosecretaria.com.br" target="_blank" rel="noopener">qrosecretaria.com.br</a> · @qrosecretaria</p>
+</div>
+
+<script>
+const Q = [
+  ["Respondo pacientes fora do horário de trabalho.", "Organizar"],
+  ["Interrompo atendimentos ou refeições para responder mensagens.", "Organizar"],
+  ["Não sei quantas faltas tive no último mês.", "Evoluir"],
+  ["Minha agenda está em mais de um lugar.", "Organizar"],
+  ["Esqueço de chamar pacientes para retorno.", "Humanizar"],
+  ["Demoro mais de 4 horas para responder um paciente novo.", "Humanizar"],
+  ["Remarco horários várias vezes por semana.", "Organizar"],
+  ["Não tenho mensagens padrão para confirmação ou boas-vindas.", "Humanizar"],
+  ["Faço tarefas administrativas à noite ou no fim de semana.", "Automatizar"],
+  ["Não tenho política de cancelamento escrita.", "Humanizar"],
+  ["Perco informações de pacientes entre conversas.", "Automatizar"],
+  ["Não sei quantas horas por semana gasto com administrativo.", "Evoluir"],
+  ["Faço encaixes sem critério definido.", "Organizar"],
+  ["Sinto que não consigo tirar férias.", "Automatizar"],
+  ["Não acompanho nenhum número do consultório.", "Evoluir"]
+];
+const LABELS = ["Nunca", "Às vezes", "Frequentemente"];
+const PILLARS = ["Organizar", "Humanizar", "Automatizar", "Evoluir"];
+const UFS = "AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO".split(" ");
+const KEY = "qro-diagnostico-lead-v1";
+const FIELDS = ["nome", "prof", "whats", "email", "cidade", "uf", "insta"];
+const $ = id => document.getElementById(id);
+
+UFS.forEach(u => { const o = document.createElement("option"); o.value = o.textContent = u; $("uf").appendChild(o); });
+
+Q.forEach(([t, p], i) => {
+  const li = document.createElement("li");
+  li.className = "q"; li.id = "row" + i;
+  li.innerHTML = `<span class="num">${String(i + 1).padStart(2, "0")}</span>
+    <div style="min-width:0"><div class="qtext"></div><span class="pillar">${p}</span></div>
+    <div class="opts" role="radiogroup" aria-label="Pergunta ${i + 1}">
+      ${LABELS.map((l, v) => `<label class="opt"><input type="radio" name="q${i}" id="q${i}-${v}" value="${v}"><span>${l}</span></label>`).join("")}
+    </div>`;
+  li.querySelector(".qtext").textContent = t;
+  $("qs").appendChild(li);
+});
+$("bars").innerHTML = PILLARS.map(p => `<div class="bar"><span>${p}</span><div class="track"><div class="fill" id="b-${p}"></div></div><span class="v" id="v-${p}">0%</span></div>`).join("");
+
+// Origem do lead (UTM) — guardada na primeira visita
+const params = new URLSearchParams(location.search);
+const UTM = {};
+["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach(k => { if (params.get(k)) UTM[k] = params.get(k).slice(0, 100); });
+
+function answers() { return Q.map((_, i) => { const c = document.querySelector(`input[name=q${i}]:checked`); return c ? +c.value : null }); }
+function compute() {
+  const a = answers();
+  const done = a.filter(x => x !== null).length;
+  const pts = a.reduce((s, x) => s + (x || 0), 0);
+  const nota = Math.round(100 - pts * 100 / 30);
+  const pil = {};
+  PILLARS.forEach(p => {
+    const idx = Q.map((q, i) => q[1] === p ? i : -1).filter(i => i >= 0);
+    pil[p] = Math.round(idx.reduce((s, i) => s + (a[i] || 0), 0) * 100 / (idx.length * 2));
+  });
+  let band, cls, msg;
+  if (nota >= 80) { band = "Operação estruturada"; cls = "good"; msg = "Sua rotina já tem processo. O foco agora é manter o ritmo e medir."; }
+  else if (nota >= 50) { band = "Estrutura parcial"; cls = "warn"; msg = "Parte da rotina funciona, parte ainda depende de você. Comece pela etapa com a barra mais cheia."; }
+  else { band = "Operação no improviso"; cls = "bad"; msg = "O administrativo está ocupando o seu dia. A boa notícia: é exatamente o ponto de partida mais fácil de transformar."; }
+  const foco = PILLARS.reduce((m, p) => pil[p] > pil[m] ? p : m, PILLARS[0]);
+  return { a, done, pts, nota, pil, band, cls, msg, foco };
+}
+function updateProgress() {
+  const d = answers().filter(x => x !== null).length;
+  $("prog").style.width = (d / 15 * 100) + "%";
+}
+
+function persist() {
+  try {
+    const s = { a: answers() };
+    FIELDS.forEach(k => s[k] = $(k).value);
+    if (Object.keys(UTM).length) s.utm = UTM;
+    else { const old = JSON.parse(localStorage.getItem(KEY) || "null"); if (old && old.utm) s.utm = old.utm; }
+    localStorage.setItem(KEY, JSON.stringify(s));
+  } catch (e) {}
+}
+function restore() {
+  try {
+    const s = JSON.parse(localStorage.getItem(KEY) || "null");
+    if (!s) return;
+    FIELDS.forEach(k => { if (s[k]) $(k).value = s[k]; });
+    (s.a || []).forEach((v, i) => { if (v !== null && v !== undefined) { const el = $(`q${i}-${v}`); if (el) el.checked = true; } });
+    if (!Object.keys(UTM).length && s.utm) Object.assign(UTM, s.utm);
+  } catch (e) {}
+}
+restore(); updateProgress();
+
+// Máscara simples de telefone
+$("whats").addEventListener("input", e => {
+  let d = e.target.value.replace(/\D/g, "").slice(0, 11);
+  if (d.length > 6) e.target.value = `(${d.slice(0, 2)}) ${d.slice(2, d.length - 4)}-${d.slice(-4)}`;
+  else if (d.length > 2) e.target.value = `(${d.slice(0, 2)}) ${d.slice(2)}`;
+  else e.target.value = d;
+});
+$("form").addEventListener("change", e => {
+  if (e.target.type === "radio") { const row = e.target.closest(".q"); if (row) row.classList.remove("missing"); }
+  if (e.target.getAttribute("aria-invalid")) e.target.removeAttribute("aria-invalid");
+  updateProgress(); persist();
+});
+$("form").addEventListener("input", e => { if (e.target.getAttribute("aria-invalid")) e.target.removeAttribute("aria-invalid"); persist(); });
+
+function fail(el, text) {
+  const st = $("status"); st.className = "status err"; st.textContent = text;
+  if (el) { el.setAttribute("aria-invalid", "true"); el.scrollIntoView({ behavior: "smooth", block: "center" }); el.focus({ preventScroll: true }); }
+}
+function validate(r) {
+  if (r.done < 15) {
+    r.a.forEach((v, i) => $("row" + i).classList.toggle("missing", v === null));
+    const first = r.a.findIndex(x => x === null);
+    const st = $("status"); st.className = "status err";
+    st.textContent = `Faltam ${15 - r.done} respostas. A primeira em aberto é a ${first + 1}.`;
+    const el = $(`q${first}-0`); el.closest(".q").scrollIntoView({ behavior: "smooth", block: "center" }); el.focus({ preventScroll: true });
+    return false;
+  }
+  if ($("nome").value.trim().length < 3) return fail($("nome"), "Informe seu nome."), false;
+  if (!$("prof").value.trim()) return fail($("prof"), "Informe sua profissão."), false;
+  const tel = $("whats").value.replace(/\D/g, "");
+  if (tel.length < 10 || tel.length > 11) return fail($("whats"), "Informe o WhatsApp com DDD."), false;
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($("email").value.trim())) return fail($("email"), "Confira o e-mail."), false;
+  if (!$("cidade").value.trim()) return fail($("cidade"), "Informe a cidade."), false;
+  if (!$("uf").value) return fail($("uf"), "Escolha a UF."), false;
+  if (!$("lgpd").checked) return fail($("lgpd"), "Para continuar, marque a autorização de contato."), false;
+  return true;
+}
+
+let result = null;
+function showResult(r) {
+  $("score").firstChild.nodeValue = r.nota;
+  $("band").className = "band " + r.cls; $("band").textContent = r.band;
+  $("msg").textContent = `${r.msg} Pontos: ${r.pts} de 30.`;
+  $("res").hidden = false;
+  requestAnimationFrame(() => PILLARS.forEach(p => { $("b-" + p).style.width = r.pil[p] + "%"; $("v-" + p).textContent = r.pil[p] + "%"; }));
+  const first = $("nome").value.trim().split(/\s+/)[0];
+  const txt = `Olá! Sou ${first}, ${$("prof").value.trim()}. Fiz o Diagnóstico da Rotina e tirei ${r.nota}/100 (${r.band}). Quero ajuda para organizar meu consultório.`;
+  $("talk").href = "https://wa.me/5547999861631?text=" + encodeURIComponent(txt);
+  $("res").scrollIntoView({ behavior: "smooth", block: "start" });
+  $("res").focus({ preventScroll: true });
+}
+
+$("form").addEventListener("submit", async e => {
+  e.preventDefault();
+  const r = compute();
+  if (!validate(r)) return;
+  const st = $("status"); st.className = "status"; st.textContent = "Calculando…";
+  const btn = $("go"); btn.disabled = true;
+  const payload = {
+    nome: $("nome").value.trim(), profissao: $("prof").value.trim(), whatsapp: $("whats").value.trim(),
+    email: $("email").value.trim().toLowerCase(), cidade: $("cidade").value.trim(), uf: $("uf").value,
+    instagram: $("insta").value.trim(), consentimento: true, site: $("site").value,
+    respostas: r.a, nota: r.nota, pontos: r.pts, faixa: r.band, pilares: r.pil, foco: r.foco,
+    origem: UTM, pagina: location.href.slice(0, 300)
+  };
+  try {
+    const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), 10000);
+    const res = await fetch("/api/lead", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload), signal: ctrl.signal });
+    clearTimeout(t);
+    if (res.status === 400) { const j = await res.json().catch(() => ({})); btn.disabled = false; return fail(null, j.error || "Confira os dados e tente de novo."); }
+  } catch (err) { /* não bloqueia o resultado se a gravação falhar */ }
+  btn.disabled = false; st.textContent = "";
+  result = r; showResult(r);
+});
+
+function fmtHoje() { const d = new Date(); return d.toLocaleDateString("pt-BR"); }
+function buildPdf(r) {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: "mm", format: "a4" });
+  const W = 210, M = 16;
+  const ink = [31, 58, 61], acc = [184, 85, 31], txt = [63, 79, 81], mute = [95, 111, 112], line = [220, 227, 224], tint = [232, 239, 236];
+  doc.setFillColor(...ink); doc.rect(0, 0, W, 34, "F");
+  doc.setTextColor(242, 166, 90); doc.setFont("helvetica", "bold"); doc.setFontSize(8);
+  doc.text("QRO ACADEMY · CONSULTÓRIO INTELIGENTE", M, 12);
+  doc.setTextColor(246, 244, 239); doc.setFont("times", "bold"); doc.setFontSize(22);
+  doc.text("Diagnóstico da Rotina", M, 24);
+  let y = 44;
+  const info = [["Nome", $("nome").value || "—"], ["Profissão", $("prof").value || "—"], ["Cidade", `${$("cidade").value} / ${$("uf").value}`], ["Data", fmtHoje()]];
+  info.forEach(([k, v], i) => {
+    const x = M + (i % 2) * 90, yy = y + Math.floor(i / 2) * 7;
+    doc.setFontSize(9.5); doc.setFont("helvetica", "bold"); doc.setTextColor(...ink); doc.text(k + ":", x, yy);
+    doc.setFont("helvetica", "normal"); doc.setTextColor(...txt); doc.text(doc.splitTextToSize(v, 64)[0], x + 22, yy);
+  });
+  y += 18;
+  doc.setFillColor(...tint); doc.roundedRect(M, y, W - 2 * M, 30, 3, 3, "F");
+  doc.setTextColor(...ink); doc.setFont("times", "bold"); doc.setFontSize(30);
+  doc.text(String(r.nota), M + 6, y + 18);
+  const nw = doc.getTextWidth(String(r.nota));
+  doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.setTextColor(...mute);
+  doc.text("/100", M + 6 + nw + 1.5, y + 18);
+  doc.setFont("helvetica", "bold"); doc.setFontSize(11); doc.setTextColor(...acc);
+  doc.text(r.band.toUpperCase(), M + 48, y + 11);
+  doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(...txt);
+  doc.text(doc.splitTextToSize(r.msg + ` Pontos: ${r.pts} de 30.`, W - 2 * M - 54), M + 48, y + 17);
+  y += 38;
+  doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(...ink);
+  doc.text("Improviso por etapa do método OHAE", M, y); y += 5;
+  PILLARS.forEach(p => {
+    doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(...txt); doc.text(p, M, y + 3.2);
+    doc.setFillColor(...line); doc.roundedRect(M + 28, y, 120, 4, 2, 2, "F");
+    if (r.pil[p] > 0) { doc.setFillColor(...acc); doc.roundedRect(M + 28, y, 120 * r.pil[p] / 100, 4, 2, 2, "F"); }
+    doc.setFont("helvetica", "bold"); doc.setTextColor(...ink); doc.text(r.pil[p] + "%", M + 152, y + 3.2);
+    y += 7;
+  });
+  y += 4;
+  doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(...ink);
+  doc.text("Respostas", M, y); y += 3;
+  doc.setFillColor(...tint); doc.rect(M, y, W - 2 * M, 7, "F");
+  doc.setFontSize(8.5); doc.text("#", M + 2, y + 4.8); doc.text("Afirmação", M + 10, y + 4.8); doc.text("Etapa", M + 120, y + 4.8); doc.text("Resposta", M + 146, y + 4.8);
+  y += 7;
+  Q.forEach(([t, p], i) => {
+    const v = r.a[i];
+    const lines = doc.splitTextToSize(t, 106);
+    const h = Math.max(7, lines.length * 4 + 3);
+    doc.setDrawColor(...line); doc.line(M, y + h, W - M, y + h);
+    doc.setFont("helvetica", "normal"); doc.setTextColor(...txt); doc.setFontSize(8.5);
+    doc.text(String(i + 1), M + 2, y + 4.8); doc.text(lines, M + 10, y + 4.8);
+    doc.setTextColor(...mute); doc.text(p, M + 120, y + 4.8);
+    doc.setFont("helvetica", "bold"); doc.setTextColor(...(v === 2 ? acc : ink));
+    doc.text(`${LABELS[v]} (${v})`, M + 146, y + 4.8);
+    y += h;
+  });
+  y += 8;
+  doc.setFont("helvetica", "normal"); doc.setFontSize(8); doc.setTextColor(...mute);
+  doc.text(doc.splitTextToSize("Nota = 100 - (pontos × 100 ÷ 30). Guarde este PDF e refaça o diagnóstico daqui a 30 dias para comparar a evolução.", W - 2 * M), M, y);
+  doc.text("QRO Academy · qrosecretaria.com.br · @qrosecretaria · WhatsApp (47) 99986-1631", M, 287);
+  return doc.output("blob");
+}
+function pdfName() {
+  const n = ($("nome").value || "diagnostico").trim().toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "diagnostico";
+  return `diagnostico-rotina-${n}.pdf`;
+}
+$("save").addEventListener("click", () => {
+  const st = $("status2"); st.className = "status";
+  if (!result) return;
+  if (!window.jspdf) { st.className = "status err"; st.textContent = "O gerador de PDF não carregou. Recarregue a página."; return; }
+  const url = URL.createObjectURL(buildPdf(result));
+  const a = document.createElement("a"); a.href = url; a.download = pdfName();
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 4000);
+  st.textContent = "PDF salvo.";
+});
+$("share").addEventListener("click", async () => {
+  const st = $("status2"); st.className = "status";
+  const text = `Fiz o Diagnóstico da Rotina do Consultório e tirei ${result.nota}/100. Faça o seu também:`;
+  const url = location.origin + location.pathname;
+  try {
+    if (navigator.share) { await navigator.share({ title: "Diagnóstico da Rotina", text, url }); return; }
+  } catch (err) { if (err && err.name === "AbortError") return; }
+  window.open("https://wa.me/?text=" + encodeURIComponent(text + " " + url), "_blank", "noopener");
+});
+</script>
+</body>
+</html>
