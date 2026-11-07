@@ -231,7 +231,9 @@ function updateProgress() {
   $("prog").style.width = (d / 15 * 100) + "%";
 }
 
+let persistOff = false;
 function persist() {
+  if (persistOff) return;
   try {
     const s = { a: answers() };
     FIELDS.forEach(k => s[k] = $(k).value);
@@ -324,6 +326,9 @@ $("form").addEventListener("submit", async e => {
   } catch (err) { /* não bloqueia o resultado se a gravação falhar */ }
   btn.disabled = false; st.textContent = "";
   result = r; showResult(r);
+  // Diagnóstico enviado: apaga o rascunho para a próxima visita começar em branco
+  try { localStorage.removeItem(KEY); } catch (e) {}
+  persistOff = true;
 });
 
 function fmtHoje() { const d = new Date(); return d.toLocaleDateString("pt-BR"); }
