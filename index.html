@@ -85,10 +85,17 @@ ol.qs { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: 
 .bar .v { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 700 }
 .cta { margin-top: 22px; padding: 18px; border-radius: 12px; background: var(--accent-soft); display: flex; flex-direction: column; gap: 12px }
 .cta h3 { font-family: var(--display); color: var(--ink); font-size: 18px; margin: 0 }
-.cta.ebook { background: var(--tint); border: 2px solid var(--accent) }
-.cta.ebook .eyebrow { margin-bottom: -6px }
-.cta.ebook .btn { align-self: flex-start; padding: 13px 22px; background: var(--accent); border-color: var(--accent); color: var(--bg) }
-@media (max-width: 560px) { .cta.ebook .btn { align-self: stretch } }
+.cta.ebook { background: var(--accent-soft); border: 2px solid var(--accent); padding: 22px; gap: 14px; box-shadow: 0 8px 24px -12px var(--accent) }
+.cta.ebook .eyebrow { margin-bottom: -8px }
+.cta.ebook h3 { font-size: 22px }
+.cta.ebook .btn { align-self: stretch; padding: 17px 22px; font-size: 18px; background: var(--accent); border-color: var(--accent); color: #FFFFFF; box-shadow: 0 6px 16px -6px var(--accent); transition: transform .15s, filter .15s }
+:root[data-theme="dark"] .cta.ebook .btn { color: #13211F }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cta.ebook .btn { color: #13211F } }
+.cta.ebook .btn:hover { transform: translateY(-1px); filter: brightness(1.06) }
+.cta.help { background: transparent; border: 1px solid var(--line) }
+.cta.help h3 { font-size: 16px }
+.cta.help .btn { align-self: flex-start; background: transparent; color: var(--ink); border-color: var(--line); font-size: 14px; padding: 10px 16px }
+@media (max-width: 560px) { .cta.help .btn { align-self: stretch } }
 .actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 20px }
 button, .btn { font: inherit; font-weight: 800; font-size: 15px; border-radius: 10px; padding: 12px 18px; cursor: pointer; border: 1px solid var(--ink); text-decoration: none; display: inline-flex; align-items: center; justify-content: center }
 .primary { background: var(--ink); color: var(--bg) }
@@ -151,21 +158,21 @@ button:disabled { opacity: .55; cursor: wait }
       </div>
       <div class="bars" id="bars"></div>
       <p class="foot" style="margin-top:10px">Cada barra mostra quanto do improviso está concentrado naquela etapa do método. A barra mais cheia indica por onde começar.</p>
-      <div class="actions">
-        <button type="button" class="primary" id="save">Baixar PDF</button>
-        <button type="button" class="ghost" id="share">Compartilhar</button>
-        <span class="status" id="status2" role="status"></span>
-      </div>
       <div class="cta ebook">
         <p class="eyebrow">Próximo passo</p>
         <h3>Ebook Consultório Inteligente</h3>
         <p id="ebookMsg">O passo a passo do método para tirar o seu consultório do improviso, etapa por etapa: Organizar, Humanizar, Automatizar e Evoluir.</p>
-        <a class="btn primary" id="ebook" href="https://go.hotmart.com/D108320401U?dp=1&src=diagnostico" target="_blank" rel="noopener">Quero o ebook</a>
+        <a class="btn" id="ebook" href="https://go.hotmart.com/D108320401U?dp=1&src=diagnostico" target="_blank" rel="noopener">Quero o ebook agora</a>
       </div>
-      <div class="cta">
-        <h3>Quer ajuda para organizar o seu consultório?</h3>
-        <p>Converse com a equipe da QRO e receba uma orientação sobre o seu resultado, sem compromisso.</p>
-        <a class="btn whats" id="talk" href="https://wa.me/5547999861631" target="_blank" rel="noopener">Falar com a QRO no WhatsApp</a>
+      <div class="actions">
+        <button type="button" class="ghost" id="save">Baixar meu resultado em PDF</button>
+        <button type="button" class="ghost" id="share">Compartilhar</button>
+        <span class="status" id="status2" role="status"></span>
+      </div>
+      <div class="cta help">
+        <h3>Prefere conversar antes?</h3>
+        <p>Fale com a equipe da QRO e receba uma orientação sobre o seu resultado, sem compromisso.</p>
+        <a class="btn" id="talk" href="https://wa.me/5547999861631" target="_blank" rel="noopener">Falar com a QRO no WhatsApp</a>
       </div>
     </section>
   </form>
