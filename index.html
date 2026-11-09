@@ -85,6 +85,10 @@ ol.qs { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: 
 .bar .v { text-align: right; font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 700 }
 .cta { margin-top: 22px; padding: 18px; border-radius: 12px; background: var(--accent-soft); display: flex; flex-direction: column; gap: 12px }
 .cta h3 { font-family: var(--display); color: var(--ink); font-size: 18px; margin: 0 }
+.cta.ebook { background: var(--tint); border: 2px solid var(--accent) }
+.cta.ebook .eyebrow { margin-bottom: -6px }
+.cta.ebook .btn { align-self: flex-start; padding: 13px 22px }
+@media (max-width: 560px) { .cta.ebook .btn { align-self: stretch } }
 .actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 20px }
 button, .btn { font: inherit; font-weight: 800; font-size: 15px; border-radius: 10px; padding: 12px 18px; cursor: pointer; border: 1px solid var(--ink); text-decoration: none; display: inline-flex; align-items: center; justify-content: center }
 .primary { background: var(--ink); color: var(--bg) }
@@ -151,6 +155,12 @@ button:disabled { opacity: .55; cursor: wait }
         <button type="button" class="primary" id="save">Baixar PDF</button>
         <button type="button" class="ghost" id="share">Compartilhar</button>
         <span class="status" id="status2" role="status"></span>
+      </div>
+      <div class="cta ebook">
+        <p class="eyebrow">Próximo passo</p>
+        <h3>Ebook Consultório Inteligente</h3>
+        <p id="ebookMsg">O passo a passo do método para tirar o seu consultório do improviso, etapa por etapa: Organizar, Humanizar, Automatizar e Evoluir.</p>
+        <a class="btn primary" id="ebook" href="https://go.hotmart.com/D108320401U?dp=1&src=diagnostico" target="_blank" rel="noopener">Quero o ebook</a>
       </div>
       <div class="cta">
         <h3>Quer ajuda para organizar o seu consultório?</h3>
@@ -301,6 +311,7 @@ function showResult(r) {
   const first = $("nome").value.trim().split(/\s+/)[0];
   const txt = `Olá! Sou ${first}, ${$("prof").value.trim()}. Fiz o Diagnóstico da Rotina e tirei ${r.nota}/100 (${r.band}). Quero ajuda para organizar meu consultório.`;
   $("talk").href = "https://wa.me/5547999861631?text=" + encodeURIComponent(txt);
+  $("ebookMsg").textContent = `Sua maior oportunidade está em ${r.foco}. O ebook mostra o passo a passo do método para tirar o seu consultório do improviso, etapa por etapa.`;
   $("res").scrollIntoView({ behavior: "smooth", block: "start" });
   $("res").focus({ preventScroll: true });
 }
@@ -391,6 +402,9 @@ function buildPdf(r) {
   y += 8;
   doc.setFont("helvetica", "normal"); doc.setFontSize(8); doc.setTextColor(...mute);
   doc.text(doc.splitTextToSize("Nota = 100 - (pontos × 100 ÷ 30). Guarde este PDF e refaça o diagnóstico daqui a 30 dias para comparar a evolução.", W - 2 * M), M, y);
+  y += 10;
+  doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.setTextColor(...acc);
+  doc.textWithLink("Próximo passo: Ebook Consultório Inteligente (clique aqui)", M, y, { url: "https://go.hotmart.com/D108320401U?dp=1&src=diagnostico-pdf" });
   doc.text("QRO Academy · qrosecretaria.com.br · @qrosecretaria · WhatsApp (47) 99986-1631", M, 287);
   return doc.output("blob");
 }
