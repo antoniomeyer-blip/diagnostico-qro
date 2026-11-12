@@ -109,6 +109,17 @@ button:disabled { opacity: .55; cursor: wait }
 [hidden] { display: none !important }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important } }
 </style>
+<!-- Meta Pixel: QRO Secretária -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1637693487989904');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1637693487989904&ev=PageView&noscript=1"></noscript>
 </head>
 <body>
 <div class="wrap">
@@ -177,6 +188,7 @@ button:disabled { opacity: .55; cursor: wait }
     </section>
   </form>
 
+  <p class="foot">Esta página usa cookies de medição da Meta para avaliar nossos anúncios.</p>
   <p class="foot">Nota = 100 − (pontos × 100 ÷ 30). QRO Academy · <a href="https://www.qrosecretaria.com.br" target="_blank" rel="noopener">qrosecretaria.com.br</a> · @qrosecretaria</p>
 </div>
 
@@ -347,6 +359,7 @@ $("form").addEventListener("submit", async e => {
   // Diagnóstico enviado: apaga o rascunho para a próxima visita começar em branco
   try { localStorage.removeItem(KEY); } catch (e) {}
   persistOff = true;
+  track("Lead", { content_name: "Diagnóstico da Rotina", value: 0, currency: "BRL", nota: r.nota, foco: r.foco });
 });
 
 function fmtHoje() { const d = new Date(); return d.toLocaleDateString("pt-BR"); }
@@ -429,6 +442,11 @@ $("save").addEventListener("click", () => {
   setTimeout(() => URL.revokeObjectURL(url), 4000);
   st.textContent = "PDF salvo.";
 });
+function track(ev, data) { try { if (window.fbq) fbq("track", ev, data || {}); } catch (e) {} }
+let started = false;
+$("form").addEventListener("change", e => { if (!started && e.target.type === "radio") { started = true; try { window.fbq && fbq("trackCustom", "DiagnosticoIniciado"); } catch (err) {} } });
+$("ebook").addEventListener("click", () => track("InitiateCheckout", { content_name: "Ebook Consultório Inteligente", currency: "BRL" }));
+$("talk").addEventListener("click", () => track("Contact", { content_name: "WhatsApp QRO" }));
 $("share").addEventListener("click", async () => {
   const st = $("status2"); st.className = "status";
   const text = `Fiz o Diagnóstico da Rotina do Consultório e tirei ${result.nota}/100. Faça o seu também:`;
